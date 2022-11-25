@@ -10,15 +10,6 @@ const int WIN_WIDTH = 600;
 // ウィンドウ縦幅
 const int WIN_HEIGHT = 400;
 
-
-/// <summary>
-/// 線と円の当たり判定
-/// </summary>
-/// <param name="lineStart"></param>
-/// <param name="lineEnd"></param>
-/// <param name="circlePos"></param>
-/// <param name="circleRadius"></param>
-/// <returns></returns>
 bool CollisonLineToCircle(Vector2 lineStart, Vector2 lineEnd, Vector2 circlePos, float circleRadius);
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
