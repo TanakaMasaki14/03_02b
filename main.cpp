@@ -44,7 +44,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// ゲームループで使う変数の宣言
 
-	Vector2 circle{ WIN_WIDTH / 2,230 };
+	Vector2 circle{ WIN_WIDTH / 2,205 };
 	float circleR = 16.0f;
 
 	Vector2 lineStart{ 100,250 };
@@ -70,8 +70,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		// 更新処理
 		//サークル座標
-		circle.x += (keys[KEY_INPUT_RIGHT] - keys[KEY_INPUT_LEFT]) * 3.0f;
-		circle.y += (keys[KEY_INPUT_DOWN] - keys[KEY_INPUT_UP]) * 3.0f;
+		circle.x += (keys[KEY_INPUT_RIGHT] - keys[KEY_INPUT_LEFT]) * 4.0f;
+		circle.y += (keys[KEY_INPUT_DOWN] - keys[KEY_INPUT_UP]) * 4.0f;
 
 		//当たり判定
 		objColor = 0xffffff;
