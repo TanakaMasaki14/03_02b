@@ -70,19 +70,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		// 更新処理
 		//サークル座標
-		circle.x += (keys[KEY_INPUT_RIGHT] - keys[KEY_INPUT_LEFT]) * 1.0f;
-		circle.y += (keys[KEY_INPUT_DOWN] - keys[KEY_INPUT_UP]) * 1.0f;
-
-		//線の終点
-		lineEnd.y += (keys[KEY_INPUT_S] - keys[KEY_INPUT_W]) * 1.0f;
+		circle.x += (keys[KEY_INPUT_RIGHT] - keys[KEY_INPUT_LEFT]) * 3.0f;
+		circle.y += (keys[KEY_INPUT_DOWN] - keys[KEY_INPUT_UP]) * 3.0f;
 
 		//当たり判定
 		objColor = 0xffffff;
 
 		if (CollisonLineToCircle(lineStart, lineEnd, circle, circleR)) {
-			//色変える
-			objColor = 0xff;
-			DrawFormatString(50, 50, objColor, "あたった");
+			DrawFormatString(270, 100, objColor, "当たった");
 		}
 
 		// 描画処理
