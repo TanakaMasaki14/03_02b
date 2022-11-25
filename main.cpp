@@ -1,8 +1,8 @@
 #include "DxLib.h"
-#include <math.h>
+#include"Vector2.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "xx2x_xx_ナマエ: タイトル";
+const char TITLE[] = "LE2B_14_タナカマサキ: タイトル";
 
 // ウィンドウ横幅
 const int WIN_WIDTH = 600;
@@ -10,8 +10,19 @@ const int WIN_WIDTH = 600;
 // ウィンドウ縦幅
 const int WIN_HEIGHT = 400;
 
+
+/// <summary>
+/// 線と円の当たり判定
+/// </summary>
+/// <param name="lineStart"></param>
+/// <param name="lineEnd"></param>
+/// <param name="circlePos"></param>
+/// <param name="circleRadius"></param>
+/// <returns></returns>
+bool CollisonLineToCircle(Vector2 lineStart, Vector2 lineEnd, Vector2 circlePos, float circleRadius);
+
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
-                   _In_ int nCmdShow) {
+	_In_ int nCmdShow) {
 	// ウィンドウモードに設定
 	ChangeWindowMode(TRUE);
 
@@ -42,12 +53,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// ゲームループで使う変数の宣言
 
+	Vector2 circle{ WIN_WIDTH / 2,230 };
+	float circleR = 16.0f;
+
+	Vector2 lineStart{ 100,250 };
+	Vector2 lineEnd{ 500,250 };
+
+	int objColor = 0xffffff;
 
 	// 最新のキーボード情報用
-	char keys[256] = {0};
+	char keys[256] = { 0 };
 
 	// 1ループ(フレーム)前のキーボード情報
-	char oldkeys[256] = {0};
+	char oldkeys[256] = { 0 };
 
 	// ゲームループ
 	while (true) {
@@ -60,10 +78,26 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
+		//サークル座標
+		circle.x += (keys[KEY_INPUT_RIGHT] - keys[KEY_INPUT_LEFT]) * 1.0f;
+		circle.y += (keys[KEY_INPUT_DOWN] - keys[KEY_INPUT_UP]) * 1.0f;
 
+		//線の終点
+		lineEnd.y += (keys[KEY_INPUT_S] - keys[KEY_INPUT_W]) * 1.0f;
+
+		//当たり判定
+		objColor = 0xffffff;
+
+		if (CollisonLineToCircle(lineStart, lineEnd, circle, circleR)) {
+			//色変える
+			objColor = 0xff;
+			DrawFormatString(50, 50, objColor, "あたった");
+		}
 
 		// 描画処理
 
+		DrawCircle(circle.x, circle.y, circleR, objColor, true);
+		DrawLine(lineStart.x, lineStart.y, lineEnd.x, lineEnd.y, objColor, true);
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();
@@ -86,4 +120,26 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 正常終了
 	return 0;
+}
+
+bool CollisonLineToCircle(Vector2 lineStart, Vector2 lineEnd, Vector2 circlePos, float circleRadius)
+{
+	//線のベクトル作成
+	Vector2 vecLine, vecCtoLS, vecCtoLHorizontal, vecCtoLVertical;
+	vecLine = lineEnd - lineStart;
+	//線のベクトル正規化
+//	vecLine = vecLine.normalize();
+	//線の始点から円のベクトル作成
+	vecCtoLS = circlePos - lineStart;
+	float length = vecCtoLS.dot(vecLine.normalize());
+
+	vecCtoLHorizontal = vecLine * length;
+	vecCtoLVertical = vecCtoLS - vecCtoLHorizontal;
+
+	float len = vecCtoLVertical.length();
+	if (len <= circleRadius) {
+		return true;
+	}
+
+	return false;
 }
